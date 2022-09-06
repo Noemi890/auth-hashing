@@ -9,6 +9,14 @@ const saltRounds = 10
 router.post('/', async (req, res) => {
     const {username, password } = req.body
 
+    const userExist = await prisma.user.findFirst({
+        where: {
+            username
+        }
+    })
+
+    if (username) return res.status(409).json({ error: 'A user with that username already exist' })
+    
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
     const createdUser = await prisma.user.create({

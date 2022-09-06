@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
 
     // If the user exists and the passwords match, create a JWT containing the username in the payload
     // Use the JWT_SECRET environment variable for the secret key
-    res.json({ token })
+    res.status(201).json({ token })
     // Send a JSON object with a "token" key back to the client, the value is the JWT created
 });
 
