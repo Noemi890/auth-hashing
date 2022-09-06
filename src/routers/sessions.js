@@ -8,6 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 router.post('/', async (req, res) => {
     const { username, password } = req.body;
+    let passwordCheck
     // Get the username and password from the request body
     const userExist = await prisma.user.findFirst({
         where: {
@@ -15,7 +16,11 @@ router.post('/', async (req, res) => {
         }
     })
 
-    const passwordCheck = await bcrypt.compare(password, userExist.password)
+    if (userExist) {
+
+    passwordCheck = await bcrypt.compare(password, userExist.password)
+
+    }
 
     if (!userExist || !passwordCheck) return res.status(401).json({ error: 'Invalid username or password' })
     // Check that a user with that username exists in the database
